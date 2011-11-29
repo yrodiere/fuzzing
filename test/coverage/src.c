@@ -1,23 +1,23 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void bar(int a)
+int bar (int a)
 {
-	if (a == 42)
-	{
-		// Crash
-		*(int*)NULL = 0;
-	}
+	return (a < 42 ? 1 : 0);
 }
 
 void foo ()
 {
-	int a;
+	int a, b, c;
 
 	printf("Input: ");
-	scanf("%d", &a);
+	scanf("%d %d %d", &a, &b, &c);
 
-	bar(a);
+	if (bar(a) && bar(b) && bar(c))
+	{
+		// Crash the program
+		*(int*)NULL = 0;
+	}
 }
 
 int main (int argc, char **argv)

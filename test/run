@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ $# -eq 1 ] || { echo 1>&2 "Usage: $0 TESTNAME" ; exit -1 ; }
+[ $# -ge 1 ] || { echo 1>&2 "Usage: $0 TESTNAME [BUNNY_OPT]" ; exit 1 ; }
 
 export PATH="../../bunny:$PATH"
 IN_DIR='in'
@@ -8,8 +8,9 @@ OUT_DIR='out'
 EXEC='exec'
 
 # Run
-cd $1 || { echo 1>&2 "No such test" ; exit -2 ; }
-CMD="bunny-main -i $IN_DIR -o $OUT_DIR ./$EXEC"
+cd $1 || { echo 1>&2 "No such test" ; exit 2 ; }
+shift
+CMD="bunny-main -i $IN_DIR -o $OUT_DIR $@ ./$EXEC"
 echo "PWD: $PWD"
 echo "Running: '$CMD'"
 $CMD
