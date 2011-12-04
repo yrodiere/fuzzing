@@ -1,0 +1,14 @@
+#!/bin/sh
+
+export PATH="../../bunny:$PATH"
+IN_DIR='in'
+OUT_DIR='out'
+EXEC='tac'
+
+# Run
+[ ! -e "$OUT_DIR" ] && mkdir "$OUT_DIR"
+CMD="bunny-main -i $IN_DIR -o $OUT_DIR $@ ./$EXEC"
+echo "PWD: $PWD"
+echo "Running: '$CMD'"
+$CMD
+
