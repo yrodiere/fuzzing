@@ -3,7 +3,7 @@
 
 int bar (int a)
 {
-	return (a < 42 ? 1 : 0);
+	return a == 54;
 }
 
 void foo ()
