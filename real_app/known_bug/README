@@ -1,5 +1,6 @@
 'tac' is part of GNU Coreutils and is licenced under the GPL v3 (see COPYING_tac).
-These binaries were compiled using bunny-gcc (see 'bunny' directory), but their source code was not altered in any way. You can get the original source code (coreutils 5.1) from:
+These binaries were compiled using bunny-gcc (see 'bunny' directory), but their source code was not altered in any way. The main file, 'tac.c', is provided in this directory.
+You can get the original, complete source code (coreutils 5.1) from:
  * gnu.org: http://ftp.gnu.org/gnu/coreutils/
  * or as we did, launching 'apt-get source coreutils/stable' on Debian Squeeze. Don't forget to apply the 5.1 patch.
 
