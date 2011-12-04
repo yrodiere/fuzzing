@@ -1,0 +1,78 @@
+rutc
+
+rutc is a calculator and expression-solver in the real and complex domain,
+written in GNU Flex and GNU Bison.
+
+Contents:
+rutc consists of the following files:
+rutc.l			: Lexical analyser
+rutc.y			: Parser
+rutc.func.c		: Functions to manipulate the data structures
+rutc.h			: Header file
+determinant.c		: Functions to use determinants
+determinant.h		: Header file for determinants
+main.c			: Main source file
+Makefile		: For auto-build
+README			: The file you're reading right now
+rutc.pdf		: A more complete description of rutc
+
+Requirements:
+Lex or its equivalent (GNU Flex)
+Yacc or its equivalent (GNU Bison)
+A C compiler supporting complex numbers (GCC)
+
+Building rutc:
+Use make to build rutc.
+
+Running rutc:
+After rutc is built, execute it by typing ./rutc
+
+Description
+rutc is a calculator that allows interpretation of expressions and control
+statements. It can understand real and complex numbers in several bases, solve linear equations, and has a statistics mode. Many pre-defined constants and functions are provided, and if these are not enough, you can define your own.
+Execution control is provided by if-else statements,while and for constructs. For more information, see Control Statements.
+
+Using rutc:
+Just type in an expression, and away you go!
+Expressions may have the following operators:
++, -, *, /, %, ^
+?:
+int, div
+==, !=, <, >, <=, >=
+sqrt, exp, log, ln
+sin, cos, tan, asin, acos, atan
+arg, real, imag, conj
+C, P
+|.|
+
+Apart from these, rutc provides user-defined functions.
+A function can be defined as:
+func name(variable list) = expression
+Eg:
+func f(x, y) = ln(x)/ln(y)
+
+rutc also provides if-else, while and for statements:
+
+An if-else statement has the form:
+if(expression) statement
+or
+if(expression) { statement list }
+
+A while statement is written as:
+while(expression) statement
+or
+while(expression) { statement list }
+
+and a for statement:
+for(init statement; expression; final statement) statement
+and is equivalent to
+init statement
+while(expression) { statement list
+final statement
+}
+
+Authors:
+Lynus
+Durgesh
+
+Email: lynusvaz@gmail.com

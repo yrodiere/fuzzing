@@ -1,0 +1,7 @@
+Version: 0.3.0
+Mon 27th April 2009:
+	Migration to autotools complete
+	Updated the documentation to reflect changes
+
+Sun 26th April 2009:
+	Completed migration to GSL

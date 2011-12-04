@@ -1,0 +1,321 @@
+\input texinfo @c -*-texinfo-*-
+@comment $Id: texinfo.txi,v 1.225 2008/09/07 22:47:46 karl Exp $
+@comment %**start of header
+@setfilename rutc.info
+
+@finalout
+@include version.texi
+@settitle rutc @value{VERSION}
+@c @syncodeindex pg cp
+
+@comment %**end of header
+@copying
+This manual is for rutc (version @value{VERSION}, @value{UPDATED})
+@end copying
+
+@titlepage
+@title rutc
+@subtitle A real and complex calculator, version @value{VERSION}
+@author Lynus Vaz, Durgesh Samant
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@iftex
+@center rutc is dedicated to the person after whom it is named.
+@end iftex
+
+
+@c Output the table of the contents at the beginning.
+@contents
+
+@ifnottex
+@node Top
+@top rutc
+@insertcopying
+@end ifnottex
+
+@menu
+* Overview:: An introduction to rutc
+* Requirements:: How do I start rutc
+* Statements::
+* Data Types::
+* Features::
+* Thanks:: Thanks
+@end menu
+
+@node Overview
+@chapter Overview
+rutc is a calculator that can understand real and complex numbers in bases 2, 8, 10 and 16, solve linear equations in any number of variables and has a statistics mode. Many pre-defined constants and functions are provided, and if these are not enough, you can define your own. Execution control is provided by if-else statements, while and for constructs.
+
+@node Requirements
+@chapter Requirements
+
+@section Requirements
+To build rutc, you require:
+@enumerate
+@item
+GNU Scientific Library
+@item
+Make
+@item
+A C compiler. rutc has only been tested using GCC on GNU/Linux.
+@item
+Texinfo, to build the documentation
+@end enumerate
+
+If you plan to modify it, you will also need:
+@enumerate
+@item
+Lex or an equivalent
+@item
+Yacc or an equivalent
+@end enumerate
+
+@section Build
+@verbatim
+./configure
+make
+@end verbatim
+
+@section Run
+After rutc is built, execute it by typing @verb{|src/rutc|}. To quit, type @verb{|quit|} or @verb{|exit|}.
+
+@node Statements
+@chapter Statements
+
+rutc defines the following statements:
+@enumerate
+@item Expression
+@item Assignment statement
+@item Solve statement
+@item Control statements
+@end enumerate
+
+@section Expression
+A line consisting of an expression alone is considered a statement. The effect is to print the value of the expression.
+
+@section Assignment statement
+This statement is of the form:
+variable [op]= expression
+where op could be one of @verb{|+ - * / % ^|}.
+When this statement is executed, the RHS is evaluated, and the value obtained is assigned to the variable.
+
+@section Solve Statement
+The solve statement has the form:@*
+@verb{|solve integer|}@*
+E.g.: 
+@verbatim
+solve 3
+@end verbatim
+This particular example will solve a system of three linear equations in three variables, x1, x2, x3.
+The equations are assumed to have the form:@*
+a1x1 + b1x2 + c1x3 = d1@*
+a2x1 + b2x2 + c2x3 = d2@*
+a3x1 + b3x2 + c3x3 = d3@*
+Make sure the variables, a1, b1, etc. have the correct values before the solve statement is executed. Note that the equations are solved using Cramer's Rule, without any checks.
+
+@section Control Statements
+The following constructs are defined:
+@enumerate
+@item If-else
+@item While
+@item For
+@end enumerate
+
+@subsection If-else statement
+An if-else has the form:@*
+@verbatim
+if(expression) { statement list } [ else { statement list } ]
+@end verbatim
+The else block is optional.@*
+E.g.:@*
+@verbatim
+if(a == 2) { b = 1
+c = -4
+} else { b = -1
+}
+@end verbatim
+Note the position of the @verb{|}|} (on a new line) and the @verb{|else|} (on same line).
+This translates to:@*
+evaluate the expression a == 2@*
+if it is true,@*
+assign the value -4 to c and 1 to b@*
+else@*
+assign -1 to b.
+
+@subsection While Statement
+The while construct is used to continue performing a series of statements while a particular condition is true.
+Form:@*
+@verbatim
+while(expression) { statement list }
+@end verbatim
+E.g.:@*
+@verbatim
+while(a < 10) { sum = sum + a
+a = a + 1
+}
+@end verbatim
+Again, note the position of the @verb{|}|}.
+
+@subsection For Statement
+The for statement has the form:
+@verbatim
+for(init statement; expression; statement) { statement list }
+@end verbatim
+It is equivalent to:
+@verbatim
+init statement
+while(expression) { statement list
+statement
+}
+@end verbatim
+E.g.:@*
+@verbatim
+for(i = 0; i < 10; i += 1)
+i
+@end verbatim
+Note that, currently, none of the three can be empty.
+
+@subsection Mode-dependent Statements
+The keyword stat is used to enter statistical mode, and the keyword endstat, to exit it.
+In this mode, apart from the normal statements, you can enter observations using the @verb{,ob_set,} keyword:
+@verbatim
+ob_set = { 2, 4, 7, 3, 9, 2.34 }
+@end verbatim
+will produce the output:
+@verbatim
+mean = 4.55667
+standard deviation = 6.64939
+median = 3.5
+@end verbatim
+
+@node Data Types
+@chapter Data Types
+
+@section Values
+Values are represented as integers, double-precision floating-point numbers or complex numbers.
+Integer range: -2147483647 to 2147483647 (the int range defined by the compiler)
+A value is used for the result of evaluating an expression, or for storing a constant.
+
+rutc defines some stored values:@*
+@verb{|pi|}: ratio of cirumference to diameter of a circle (approximated to a double-precision floating-point number)@*
+@verb{|e|}: exp(1)@*
+@verb{|I|}: sqrt(-1)@*
+
+@section Variables
+A variable is accessed using an identifier and an optional integer to denote an index. An identifier may start with an underscore or an alphabet, and may consist of more underscores or alphanumeric characters. Variables need not be defined before being used: undefined variables are automatically defined and given a value of 0.
+
+@section Arrays
+rutc supports arrays. A particular variable in an array can be accessed using its subscript in square brackets: @verb{|a[2]|}
+
+An element in an array need not be defined before being used. The subscript may be denoted using any valid positive expression.
+E.g., @verb{|a[exp(2)]|} is equivalent to @verb{|a[7]|}.
+
+Subscripts are converted to integers before being used. Negative subscripts are not permitted. Note that the variable @verb{|var[0]|} is equivalent to @verb{|var|} (bash style).
+
+The elements of the array need not all be of the same type.
+
+@section Operators
+@verb{|+ - * / % ^|} (i.e., power): normal arithmetic operators@*
+@verb{|++ --|}: pre- and post-fix operators@*
+@verb{|?:|} : conditional expression@*
+@verb{|int div|} (i.e., integer division)@*
+@verb{|== != < > <= >=|} : comparison operators@*
+@verb{|&& || !|}: boolean operators@*
+@verb{|sqrt exp log ln|} (i.e., natural log)@*
+@verb{|sin cos tan asin acos atan|}
+@verb{|arg real imag conj|}: for complex numbers@*
+@verb{|C P|},: combination, permutation@*
+@verb{,|.|,}: give the absolute value of an expression (applicable to complex numbers, too)@*
+Note that the boolean operators are not short-circuit operators.
+
+An expression may also have the form:
+@verbatim
+( { statement list }, expression )}
+@end verbatim
+This is evaluated as: execute the statement list, and the expression value becomes the value of the
+expression.@*
+E.g.:
+@verbatim
+( { i = 2
+j = i++
+}, j )
+@end verbatim
+prints out the value @verb{|2|}, and the value of @verb{|i|} becomes @verb{|3|}.
+This permits functions to become more expressive and easier to handle, e.g., the following function checks whether a given number is a prime:
+@verbatim
+func prime(x) = ({ s = sqrt(x)
+flag = 0
+for(i = 2; i <= s; i+= 1)
+{
+if((x % i) == 0)
+{
+flag = 1
+}
+}
+}, !flag)
+@end verbatim
+
+@node Features
+@chapter Features
+@section User-defined Functions
+rutc allows you to define your own functions. Functions are defined as:
+@verbatim
+func function_name(variable list) = expression
+@end verbatim
+The function name may be any valid identifier, while the variable list is a comma-separated list of
+variables. Note: no arrays allowed here (yet).
+This may then be used as any other function.@*
+E.g.:
+@verbatim
+func f(x, y) = x+y
+f(2, 3)
+@end verbatim
+Gives an output of @verb{|5|}.
+
+Note that a function is defined immediately after you type it:
+@verbatim
+a = 2
+func f(x) = 3*x
+if(a == 2)
+{
+a = f(2)
+} else
+{
+func f(x) = 3
+}
+@end verbatim
+Sets the value of @verb{|a|} to @verb{|3|} not @verb{|6|}.
+
+@section Bases
+You can set the base of display by changing the value of the obase variable. Supported values are 2, 8, 10 and 16.
+The default input base is decimal. A number may be entered in any other supported base by specifying a
+qualifier at the end: @verb{|b|} for binary, @verb{|o|} for octal and @verb{|h|} for hexadecimal.
+E.g.: Type @verb{|111b|} instead of @verb{|7|}.
+
+@section Comments
+Comments may be enclosed within @verb{|/*|} and @verb{|*/|} (C style).
+Nested comments are not permitted.@*
+E.g.:
+@verbatim
+/* This program will sum up the
+/* first 10 natural numbers. */
+for(i = 1; i <= 10; i += 1)
+sum += i
+sum
+@end verbatim
+
+@node Thanks
+@chapter Thanks
+Thanks are due to Mr. Ramprasad Joshi for his constant encouragement, and advice. Also, thanks to my good friends Ajay, Deepak, Sanket and Ravitejua for their (mostly) enthusiastic reviews and suggestions.
+
+@page
+Well, that's all, folks! Hope you like it!
+
+Frankly, rutc hasn't generated much interest since it's release. If you do like it, or if you have any suggestions, please drop me a note at @email{lynusvaz@@users.sourceforge.net}. I'd be glad of the feedback.
+
+rutc is distributed under the terms of the GPL v3. For more information, type @verb{|warranty|} in rutc, or see the file @verb{|gpl.txt|}.
+
+@bye
