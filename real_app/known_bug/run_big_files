@@ -1,13 +1,13 @@
 #!/bin/sh
 
 export PATH="../../bunny:$PATH"
-IN_DIR='in'
-OUT_DIR='out'
+IN_DIR='in_big_files'
+OUT_DIR='out_big_files'
 EXEC='tac'
 
 # Run
 [ ! -e "$OUT_DIR" ] && mkdir "$OUT_DIR"
-CMD="bunny-main -i $IN_DIR -o $OUT_DIR -F32000 $@ ./$EXEC"
+CMD="bunny-main -i $IN_DIR -o $OUT_DIR $@ ./$EXEC"
 echo "PWD: $PWD"
 echo "Running: '$CMD'"
 $CMD
